@@ -32,13 +32,9 @@ export function ClientOnlyBackground() {
     },
     {
       sectionId: 'problem',
-      imagePath: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
-      effectComponent: WaveEffect,
+      imagePath: '',
+      effectComponent: undefined,
       effectProps: {
-        frequencyX: 19,
-        frequencyY: 7,
-        amplitude: 0.1,
-        speed: 1.2
       }
     },
     {
@@ -46,10 +42,6 @@ export function ClientOnlyBackground() {
       imagePath: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
       effectComponent: WaveEffect,
       effectProps: {
-        frequencyX: 25,
-        frequencyY: 15,
-        amplitude: 0.08,
-        speed: 1.8
       },
       flipHorizontal: true
     },
