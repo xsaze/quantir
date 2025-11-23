@@ -19,13 +19,6 @@
     transform: translateY(-4px);
 }
 
-.active {
-    background: rgba(30, 30, 30, 0.2);
-    border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0 40px var(--glow);
-    transform: translateY(-4px);
-}
-
 @media (max-width: 768px) {
     .card {
         padding: var(--spacing-md);
@@ -36,5 +29,13 @@
         border-color: var(--border);
         box-shadow: none;
         transform: none;
+    }
+
+    .active {
+        background: rgba(30, 30, 30, 0.2);
+        border-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 40px var(--glow);
+        transform: translateY(-4px);
+        transition: all var(--transition-base);
     }
 }

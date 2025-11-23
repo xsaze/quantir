@@ -7,11 +7,14 @@ interface FeatureCardProps {
     icon: React.ReactNode;
     title: string;
     description: string;
+    active?: boolean;
 }
 
-export function FeatureCard({ icon, title, description }: FeatureCardProps) {
+export function FeatureCard({ icon, title, description, active = false }: FeatureCardProps) {
+    const cardClass = `${styles.featureCard} ${active ? styles.active : ''}`;
+
     return (
-        <GlassCard className={styles.featureCard}>
+        <GlassCard className={cardClass} active={active}>
             <h3 className={styles.title}>{title}</h3>
             <p className={styles.description}>{description}</p>
         </GlassCard>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FeatureCard } from '../ui/FeatureCard';
 import styles from './Features.module.css';
@@ -49,6 +50,39 @@ const features = [
 ];
 
 export function Features() {
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+    const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    useEffect(() => {
+        let lastY = window.scrollY;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastY) {
+                setScrollDirection('down');
+            } else if (currentScrollY < lastY) {
+                setScrollDirection('up');
+            }
+            lastY = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <section className={styles.section} id="features">
             <div className={styles.container}>
@@ -71,13 +105,35 @@ export function Features() {
                             key={feature.title}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, amount: 0.5 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
+                            onViewportEnter={() => {
+                                if (isMobile) {
+                                    if (scrollDirection === 'down') {
+                                        if (index > 0) {
+                                            setActiveIndex(index - 1);
+                                            // If this is the last element, highlight it after a short delay
+                                            if (index === features.length - 1) {
+                                                setTimeout(() => setActiveIndex(index), 400);
+                                            }
+                                        }
+                                    } else if (scrollDirection === 'up') {
+                                        if (index < features.length - 1) {
+                                            setActiveIndex(index + 1);
+                                            // If this is the first element, highlight it after a short delay
+                                            if (index === 0) {
+                                                setTimeout(() => setActiveIndex(index), 400);
+                                            }
+                                        }
+                                    }
+                                }
+                            }}
                         >
                             <FeatureCard
                                 icon={feature.icon}
                                 title={feature.title}
                                 description={feature.description}
+                                active={isMobile && activeIndex === index}
                             />
                         </motion.div>
                     ))}
