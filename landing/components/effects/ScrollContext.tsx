@@ -70,7 +70,7 @@ export const ScrollProvider: React.FC<ScrollProviderProps> = ({
     const observerCallback: IntersectionObserverCallback = (entries) => {
       // Find the most visible section
       let maxRatio = 0;
-      let mostVisibleEntry: IntersectionObserverEntry | null = null;
+      let mostVisibleEntry: IntersectionObserverEntry | undefined;
 
       entries.forEach((entry) => {
         if (entry.intersectionRatio > maxRatio) {
@@ -79,7 +79,7 @@ export const ScrollProvider: React.FC<ScrollProviderProps> = ({
         }
       });
 
-      if (mostVisibleEntry && mostVisibleEntry.isIntersecting) {
+      if (mostVisibleEntry?.isIntersecting) {
         const sectionId = mostVisibleEntry.target.id;
         setActiveSection(sectionId);
         activeSectionRef.current = mostVisibleEntry.target as HTMLElement;
