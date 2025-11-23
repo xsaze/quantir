@@ -32,6 +32,8 @@ interface BackgroundSection {
   effectComponent?: React.ComponentType<any>;
   /** Optional: Effect-specific props */
   effectProps?: Record<string, any>;
+  /** Optional: Mobile-specific effect props */
+  mobileEffectProps?: Record<string, any>;
   /** Optional: Flip background horizontally */
   flipHorizontal?: boolean;
   /** Optional: Scroll-responsive parameters */
@@ -61,6 +63,18 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
 }) => {
   const { scrollY, activeSection } = useScrollContext();
   const [sectionPositions, setSectionPositions] = useState<Array<{ top: number; height: number }>>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Calculate background position based on scroll
   const backgroundPositionY = -(scrollY * parallaxSpeed);
@@ -170,27 +184,61 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
             });
           }
 
+          // Calculate transform based on section and mobile state
+          const getMobileRotation = () => 135; // Change this value to rotate (in degrees)
+
+          const getTransform = () => {
+            if (section.sectionId === 'features' && isMobile) {
+              return `rotate(${getMobileRotation()}deg)`;
+            }
+            if (section.sectionId !== 'features' && section.flipHorizontal) {
+              return 'scaleX(-1)';
+            }
+            return 'none';
+          };
+
+          // Calculate dimensions based on section and mobile state
+          const getDimensions = () => {
+            if (section.sectionId === 'features' && isMobile) {
+              // Calculate the size needed for a rotated square to cover the viewport
+              const diagonal = Math.sqrt(Math.pow(window.innerWidth, 2) + Math.pow(position.height, 2));
+              return {
+                width: `${diagonal}px`,
+                height: `${diagonal}px`
+              };
+            }
+            return {
+              width: '100%',
+              height: `${position.height}px`
+            };
+          };
+
+          const dimensions = getDimensions();
+
           return (
             <div
               key={section.sectionId}
               style={{
                 position: 'absolute',
                 top: `${position.top}px`,
-                left: 0,
-                width: '100%',
-                height: `${position.height}px`,
+                left: section.sectionId === 'features' && isMobile ? '50%' : 0,
+                width: dimensions.width,
+                height: dimensions.height,
                 // Only show CSS background if there's NO effect component
                 backgroundImage: !EffectComponent ? `url(${section.imagePath})` : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                transform: section.flipHorizontal ? 'scaleX(-1)' : 'none'
+                transform: section.sectionId === 'features' && isMobile
+                  ? `translateX(-50%) rotate(${getMobileRotation()}deg)`
+                  : getTransform()
               }}
             >
               {/* Effect component (renders background itself via WebGL) */}
               {EffectComponent && (
                 <EffectComponent
                   {...section.effectProps}
+                  {...(isMobile && section.mobileEffectProps ? section.mobileEffectProps : {})}
                   {...scrollResponsiveProps}
                   backgroundImage={section.imagePath}
                   scrollProgress={sectionScrollProgress}
@@ -199,8 +247,7 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
                     top: 0,
                     left: 0,
                     width: '100%',
-                    height: '100%',
-                    transform: section.flipHorizontal ? 'scaleX(-1)' : 'none'
+                    height: '100%'
                   }}
                 />
               )}
