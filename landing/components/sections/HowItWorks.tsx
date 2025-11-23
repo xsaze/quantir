@@ -12,7 +12,7 @@ const steps = [
     },
     {
         number: '02',
-        title: 'Hold $QUANTIR Token',
+        title: 'Hold $QNTR Token',
         description: 'Free tier available. Premium features unlocked by holding the token.',
     },
     {
