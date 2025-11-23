@@ -42,6 +42,10 @@ export function ClientOnlyBackground() {
       imagePath: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
       effectComponent: WaveEffect,
       effectProps: {
+        frequencyX: 46,
+        frequencyY: 50,
+        amplitude: 0.1,
+        speed: 0.4
       },
       flipHorizontal: true
     },
@@ -53,12 +57,6 @@ export function ClientOnlyBackground() {
     },
     {
       sectionId: 'pricing',
-      imagePath: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg',
-      effectComponent: undefined,
-      effectProps: {}
-    },
-    {
-      sectionId: 'waitlist',
       imagePath: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg',
       effectComponent: undefined,
       effectProps: {}
