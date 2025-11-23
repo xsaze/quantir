@@ -5,14 +5,14 @@
     align-items: center;
     gap: var(--spacing-md);
     height: 100%;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(4px);
 }
 
-.featureCard:hover {
-    backdrop-filter: blur(2px);
-    backdrop-filter: brightness(50%);
-    backdrop-filter: contrast(120%);
-    backdrop-filter: sepia(75%);
+/* Only apply hover effects on devices with hover capability (not touch devices) */
+@media (hover: hover) {
+    .featureCard:hover {
+        backdrop-filter: blur(0px) brightness(60%) contrast(140%) sepia(90%);
+    }
 }
 
 .featureCard:hover .description {
@@ -53,21 +53,13 @@
         font-size: var(--text-body);
     }
 
-    .featureCard:hover {
-        backdrop-filter: blur(6px);
-        backdrop-filter: brightness(100%);
-        backdrop-filter: contrast(100%);
-    }
-
-    .featureCard:hover .description {
-        text-shadow: none;
+    /* Reduce backdrop-filter on mobile for better performance */
+    .featureCard {
+        backdrop-filter: blur(2px);
     }
 
     .featureCard.active {
-        backdrop-filter: blur(2px);
-        backdrop-filter: brightness(50%);
-        backdrop-filter: contrast(120%);
-        backdrop-filter: sepia(75%);
+        backdrop-filter: blur(1px) brightness(50%) contrast(140%) sepia(90%);
     }
 
     .featureCard.active .description {

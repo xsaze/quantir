@@ -2,6 +2,12 @@
     padding: var(--spacing-3xl) 0;
     position: relative;
     z-index: 1;
+    overflow: hidden;
+    background-image: url('/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
 }
 
 .container {

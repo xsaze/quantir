@@ -141,14 +141,22 @@
     top: 80px;
     left: 0;
     right: 0;
-    background: var(--surface-glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10, 10, 10, 0.95);
     border-bottom: 1px solid var(--border);
     padding: 2rem;
     flex-direction: column;
     gap: 1.5rem;
     animation: slideDown 0.3s ease;
+    will-change: transform, opacity;
+}
+
+/* Reduce backdrop-filter on mobile, only use on devices with good performance */
+@media (min-width: 769px) {
+    .mobileMenu {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: var(--surface-glass);
+    }
 }
 
 .mobileNavLink {

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FeatureCard } from '../ui/FeatureCard';
+import { WaveEffect } from '../effects/WaveEffect';
 import styles from './Features.module.css';
 
 // Simple icon components using Unicode characters and symbols
@@ -53,6 +54,8 @@ export function Features() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [isMobile, setIsMobile] = useState(false);
     const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
+    const [backgroundSize, setBackgroundSize] = useState<number>(0);
+    const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -65,26 +68,94 @@ export function Features() {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    // Calculate background size dynamically based on section dimensions
+    useEffect(() => {
+        const calculateBackgroundSize = () => {
+            if (sectionRef.current && isMobile) {
+                const sectionHeight = sectionRef.current.offsetHeight;
+                const viewportWidth = window.innerWidth;
+                // Calculate diagonal to ensure full coverage when rotated
+                const diagonal = Math.sqrt(Math.pow(viewportWidth, 2) + Math.pow(sectionHeight, 2));
+                setBackgroundSize(diagonal);
+            } else {
+                setBackgroundSize(0);
+            }
+        };
+
+        calculateBackgroundSize();
+        window.addEventListener('resize', calculateBackgroundSize);
+
+        return () => window.removeEventListener('resize', calculateBackgroundSize);
+    }, [isMobile]);
+
     useEffect(() => {
         let lastY = window.scrollY;
+        let rafId: number | null = null;
+        let lastScrollY = window.scrollY;
 
         const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > lastY) {
-                setScrollDirection('down');
-            } else if (currentScrollY < lastY) {
-                setScrollDirection('up');
+            lastScrollY = window.scrollY;
+
+            // Throttle with requestAnimationFrame
+            if (rafId !== null) {
+                return;
             }
-            lastY = currentScrollY;
+
+            rafId = requestAnimationFrame(() => {
+                rafId = null;
+                const currentScrollY = lastScrollY;
+
+                if (currentScrollY > lastY) {
+                    setScrollDirection('down');
+                } else if (currentScrollY < lastY) {
+                    setScrollDirection('up');
+                }
+                lastY = currentScrollY;
+            });
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
 
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+            }
+        };
     }, []);
 
     return (
-        <section className={styles.section} id="features">
+        <section className={styles.section} id="features" ref={sectionRef}>
+            <div
+                className={styles.background}
+                style={{
+                    ...(isMobile && backgroundSize > 0 ? {
+                        width: `${backgroundSize}px`,
+                        height: `${backgroundSize}px`
+                    } : {})
+                }}
+            >
+                <WaveEffect
+                    backgroundImage="/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg"
+                    frequencyX={46}
+                    frequencyY={50}
+                    amplitude={0.1}
+                    speed={0.4}
+                />
+                {/* Shadow overlay */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        boxShadow: 'inset 0 20px 60px rgba(0, 0, 0, 1)',
+                        pointerEvents: 'none',
+                        zIndex: 1
+                    }}
+                />
+            </div>
             <div className={styles.container}>
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

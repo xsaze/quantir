@@ -44,26 +44,49 @@ export const ScrollProvider: React.FC<ScrollProviderProps> = ({
   const [scrollY, setScrollY] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
   const activeSectionRef = useRef<HTMLElement | null>(null);
+  const sectionMeasurementsRef = useRef<{ top: number; height: number } | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    // Track scroll position
+    // Cache section measurements when active section changes
+    if (activeSectionRef.current) {
+      sectionMeasurementsRef.current = {
+        top: activeSectionRef.current.offsetTop,
+        height: activeSectionRef.current.offsetHeight
+      };
+    }
+  }, [activeSection]);
+
+  useEffect(() => {
+    // Track scroll position with requestAnimationFrame throttling
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollY(currentScrollY);
-      setHasScrolled(currentScrollY > 50);
+      lastScrollY.current = window.scrollY;
 
-      // Calculate scroll progress within active section
-      if (activeSectionRef.current) {
-        const section = activeSectionRef.current;
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionBottom = sectionTop + sectionHeight;
-
-        if (currentScrollY >= sectionTop && currentScrollY <= sectionBottom) {
-          const progress = (currentScrollY - sectionTop) / sectionHeight;
-          setScrollProgress(Math.max(0, Math.min(1, progress)));
-        }
+      // Cancel any pending frame
+      if (rafIdRef.current !== null) {
+        return;
       }
+
+      // Schedule update for next frame
+      rafIdRef.current = requestAnimationFrame(() => {
+        rafIdRef.current = null;
+        const currentScrollY = lastScrollY.current;
+
+        setScrollY(currentScrollY);
+        setHasScrolled(currentScrollY > 50);
+
+        // Calculate scroll progress within active section using cached measurements
+        if (sectionMeasurementsRef.current) {
+          const { top: sectionTop, height: sectionHeight } = sectionMeasurementsRef.current;
+          const sectionBottom = sectionTop + sectionHeight;
+
+          if (currentScrollY >= sectionTop && currentScrollY <= sectionBottom) {
+            const progress = (currentScrollY - sectionTop) / sectionHeight;
+            setScrollProgress(Math.max(0, Math.min(1, progress)));
+          }
+        }
+      });
     };
 
     // Set up Intersection Observer for section detection
@@ -106,6 +129,9 @@ export const ScrollProvider: React.FC<ScrollProviderProps> = ({
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
       observer.disconnect();
     };
   }, [threshold, rootMargin]);

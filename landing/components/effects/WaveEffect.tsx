@@ -41,6 +41,9 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
   const bufferRef = useRef<WebGLBuffer | null>(null);
   const startTimeRef = useRef(Date.now());
   const animationIdRef = useRef<number | undefined>(undefined);
+  const isScrollingRef = useRef(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const frameSkipCounterRef = useRef(0);
 
   // Use refs for parameters to avoid recreating WebGL context
   const paramsRef = useRef({ frequencyX, frequencyY, amplitude, speed });
@@ -215,8 +218,38 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
       backgroundTextureRef.current = texture;
     };
 
-    // Render loop
+    // Scroll detection for performance optimization
+    const handleScroll = () => {
+      isScrollingRef.current = true;
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Render loop with scroll-aware frame skipping
     const render = () => {
+      // Skip rendering if not active
+      if (!isActive) {
+        animationIdRef.current = requestAnimationFrame(render);
+        return;
+      }
+
+      // Reduce frame rate during scrolling (render every 3rd frame)
+      if (isScrollingRef.current) {
+        frameSkipCounterRef.current++;
+        if (frameSkipCounterRef.current % 3 !== 0) {
+          animationIdRef.current = requestAnimationFrame(render);
+          return;
+        }
+      } else {
+        frameSkipCounterRef.current = 0;
+      }
+
       resizeCanvas();
 
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -256,6 +289,11 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
     // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('scroll', handleScroll);
+
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
 
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current);
@@ -273,7 +311,7 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
         gl.deleteBuffer(bufferRef.current);
       }
     };
-  }, [backgroundImage]); // Only recreate on background image change
+  }, [backgroundImage, isActive]); // Only recreate on background image or isActive change
 
   return (
     <canvas

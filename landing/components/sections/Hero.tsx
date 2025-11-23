@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
+import { MaskMagicEffect } from '../effects/MaskMagicEffect';
 import styles from './Hero.module.css';
 
 export function Hero() {
@@ -15,6 +16,9 @@ export function Hero() {
 
     return (
         <section className={styles.hero} id="hero">
+            <div className={styles.background}>
+                <MaskMagicEffect backgroundImage="/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg" />
+            </div>
             <div className={styles.container}>
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

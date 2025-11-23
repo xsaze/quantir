@@ -1,21 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useScrollContext } from '../effects/ScrollContext';
 import { Button } from '../ui/Button';
 import styles from './Header.module.css';
 
 export function Header() {
-    const [scrolled, setScrolled] = useState(false);
+    const { hasScrolled } = useScrollContext();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
@@ -34,7 +26,7 @@ export function Header() {
     };
 
     return (
-        <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
+        <header className={`${styles.header} ${hasScrolled ? styles.scrolled : ''}`}>
             <div className={styles.container}>
                 <div className={styles.logo}>
                     <span className={styles.logoText}>QUANTIR</span>

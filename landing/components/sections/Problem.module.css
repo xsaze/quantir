@@ -2,6 +2,7 @@
     padding: var(--spacing-3xl) 0;
     position: relative;
     z-index: 1;
+
 }
 
 .eyeBackground {
@@ -9,10 +10,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
-    width: 45%;
+    width: 35%;
     height: 100%;
     z-index: -5;
-    opacity: 0.8;
+    opacity: 1;
     pointer-events: none;
 }
 

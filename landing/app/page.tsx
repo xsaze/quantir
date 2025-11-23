@@ -6,20 +6,21 @@ import { Features } from '@/components/sections/Features';
 import { HowItWorks } from '@/components/sections/HowItWorks';
 import { Pricing } from '@/components/sections/Pricing';
 import { Waitlist } from '@/components/sections/Waitlist';
-import { ClientOnlyBackground } from '@/components/effects/ClientOnlyBackground';
+import { ScrollProvider } from '@/components/effects/ScrollContext';
 
 export default function Home() {
   return (
-    <main>
-      <ClientOnlyBackground />
-      <Header />
-      <Hero />
-      <Problem />
-      <Features />
-      <HowItWorks />
-      <Pricing />
-      <Waitlist />
-      <Footer />
-    </main>
+    <ScrollProvider threshold={0.4} rootMargin="0px">
+      <main>
+        <Header />
+        <Hero />
+        <Problem />
+        <Features />
+        <HowItWorks />
+        <Pricing />
+        <Waitlist />
+        <Footer />
+      </main>
+    </ScrollProvider>
   );
 }

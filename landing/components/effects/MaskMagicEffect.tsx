@@ -55,13 +55,16 @@ export const MaskMagicEffect: React.FC<MaskMagicEffectProps> = ({
   const pointerRef = useRef({ x: 0.5, y: 0.5 });
   const startTimeRef = useRef(Date.now());
   const animationIdRef = useRef<number | undefined>(undefined);
+  const isScrollingRef = useRef(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const frameSkipCounterRef = useRef(0);
 
   // Configuration (use props if provided, otherwise fall back to defaults)
   const config = {
-    MASK_SIZE: maskSize ?? 0.50,
+    MASK_SIZE: maskSize ?? 0.5,
     PIXEL_SIZE: pixelSize ?? 50.0,
-    NOISE_SCALE: noiseScale ?? 0.50,
-    GROWTH_SPEED: growthSpeed ?? 0.3,
+    NOISE_SCALE: noiseScale ?? 0.65,
+    GROWTH_SPEED: growthSpeed ?? 0.2,
     DISTORTION_STRENGTH: distortionStrength ?? 0.1
   };
 
@@ -312,8 +315,38 @@ export const MaskMagicEffect: React.FC<MaskMagicEffectProps> = ({
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
-    // Render loop
+    // Scroll detection for performance optimization
+    const handleScroll = () => {
+      isScrollingRef.current = true;
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Render loop with scroll-aware frame skipping
     const render = () => {
+      // Skip rendering if not active
+      if (!isActive) {
+        animationIdRef.current = requestAnimationFrame(render);
+        return;
+      }
+
+      // Reduce frame rate during scrolling (render every 3rd frame)
+      if (isScrollingRef.current) {
+        frameSkipCounterRef.current++;
+        if (frameSkipCounterRef.current % 3 !== 0) {
+          animationIdRef.current = requestAnimationFrame(render);
+          return;
+        }
+      } else {
+        frameSkipCounterRef.current = 0;
+      }
+
       resizeCanvas();
 
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -355,6 +388,11 @@ export const MaskMagicEffect: React.FC<MaskMagicEffectProps> = ({
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('scroll', handleScroll);
+
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
 
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current);
@@ -368,7 +406,7 @@ export const MaskMagicEffect: React.FC<MaskMagicEffectProps> = ({
         gl.deleteProgram(programRef.current);
       }
     };
-  }, [backgroundImage, maskSize, pixelSize, noiseScale, growthSpeed, distortionStrength]);
+  }, [backgroundImage, maskSize, pixelSize, noiseScale, growthSpeed, distortionStrength, isActive]);
 
   return (
     <canvas

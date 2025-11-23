@@ -41,7 +41,7 @@ export function Problem() {
                     <div className={styles.eyeBackground}>
                 <EyeTrackingEffect
                     imageUrl="/assets/eyesmall.jpg"
-                    sensitivity={0.5}
+                    sensitivity={0.3}
                     zoom={1.1}
                 />
                     </div>
@@ -49,7 +49,7 @@ export function Problem() {
                     <div className={styles.divider}></div>
 
                     <div className={styles.solutionSide}>
-                        <h2 className={styles.title}>The Quantir Difference</h2>
+                        <h2 className={styles.title}>The Solution</h2>
                         <div className={styles.solutionList}>
                             <div className={styles.solutionItem}>
                                 <span className={styles.icon}>✓</span>
