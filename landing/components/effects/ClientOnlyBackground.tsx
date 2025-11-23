@@ -5,6 +5,7 @@ import { ScrollProvider } from './ScrollContext';
 import { ScrollingBackground } from './ScrollingBackground';
 import { MaskMagicEffect } from './MaskMagicEffect';
 import { WaveEffect } from './WaveEffect';
+import type { EasingFunction } from './ScrollingBackground';
 
 /**
  * Client-only wrapper for scrolling background with ScrollProvider
@@ -35,10 +36,10 @@ export function ClientOnlyBackground() {
       effectComponent: WaveEffect,
       effectProps: {},
       scrollParams: [
-        { param: 'frequencyX', startValue: 19, endValue: 44, easing: 'easeInOutCubic' },
-        { param: 'frequencyY', startValue: 7, endValue: 44, easing: 'easeInOutCubic' },
-        { param: 'amplitude', startValue: 0.1, endValue: 0.1, easing: 'linear' },
-        { param: 'speed', startValue: 0.8, endValue: 3.8, easing: 'easeOutCubic' }
+        { param: 'frequencyX', startValue: 19, endValue: 44, easing: 'easeInOutCubic' as EasingFunction },
+        { param: 'frequencyY', startValue: 7, endValue: 44, easing: 'easeInOutCubic' as EasingFunction },
+        { param: 'amplitude', startValue: 0.1, endValue: 0.1, easing: 'linear' as EasingFunction },
+        { param: 'speed', startValue: 0.8, endValue: 3.8, easing: 'easeOutCubic' as EasingFunction }
       ]
     },
     {
@@ -47,10 +48,10 @@ export function ClientOnlyBackground() {
       effectComponent: WaveEffect,
       effectProps: {},
       scrollParams: [
-        { param: 'frequencyX', startValue: 44, endValue: 19, easing: 'easeInOutCubic' },
-        { param: 'frequencyY', startValue: 44, endValue: 7, easing: 'easeInOutCubic' },
-        { param: 'amplitude', startValue: 0.1, endValue: 0.1, easing: 'linear' },
-        { param: 'speed', startValue: 3.8, endValue: 0.8, easing: 'easeInCubic' }
+        { param: 'frequencyX', startValue: 44, endValue: 19, easing: 'easeInOutCubic' as EasingFunction },
+        { param: 'frequencyY', startValue: 44, endValue: 7, easing: 'easeInOutCubic' as EasingFunction },
+        { param: 'amplitude', startValue: 0.1, endValue: 0.1, easing: 'linear' as EasingFunction },
+        { param: 'speed', startValue: 3.8, endValue: 0.8, easing: 'easeInCubic' as EasingFunction }
       ],
       flipHorizontal: true
     },

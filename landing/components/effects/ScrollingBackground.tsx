@@ -3,9 +3,9 @@
 import React from 'react';
 import { useScrollContext } from './ScrollContext';
 
-type EasingFunction = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic';
+export type EasingFunction = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic';
 
-interface ScrollParamConfig {
+export interface ScrollParamConfig {
   param: string;
   startValue: number;
   endValue: number;
