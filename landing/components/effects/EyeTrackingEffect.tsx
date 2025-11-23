@@ -22,6 +22,7 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
     const requestRef = useRef<number | undefined>(undefined);
     const pointerRef = useRef({ x: 0.5, y: 0.5 });
     const paramsRef = useRef({ sensitivity, zoom });
+    const isMobileRef = useRef(false);
 
     useEffect(() => {
         paramsRef.current = { sensitivity, zoom };
@@ -171,8 +172,12 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
 
         requestRef.current = requestAnimationFrame(render);
 
+        // --- Detect Mobile ---
+        isMobileRef.current = window.matchMedia('(max-width: 768px)').matches;
+
         // --- Event Listeners ---
         const handleMouseMove = (e: MouseEvent) => {
+            if (isMobileRef.current) return;
             const rect = canvas.getBoundingClientRect();
             pointerRef.current = {
                 x: (e.clientX - rect.left) / rect.width,
@@ -180,22 +185,40 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
             };
         };
 
-        const handleTouchMove = (e: TouchEvent) => {
-            const touch = e.targetTouches[0];
+        const handleScroll = () => {
+            if (!isMobileRef.current) return;
             const rect = canvas.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+
+            // Calculate how much of the element is in view
+            const elementCenter = rect.top + rect.height / 2;
+            const viewportCenter = viewportHeight / 2;
+
+            // Normalize to 0-1 range
+            const scrollProgress = Math.max(0, Math.min(1,
+                0.5 + (viewportCenter - elementCenter) / viewportHeight
+            ));
+
             pointerRef.current = {
-                x: (touch.clientX - rect.left) / rect.width,
-                y: 1.0 - (touch.clientY - rect.top) / rect.height
+                x: 0.5,
+                y: scrollProgress
             };
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove, { passive: false });
+        if (isMobileRef.current) {
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll(); // Initial call
+        } else {
+            window.addEventListener('mousemove', handleMouseMove);
+        }
 
         return () => {
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('touchmove', handleTouchMove);
+            if (isMobileRef.current) {
+                window.removeEventListener('scroll', handleScroll);
+            } else {
+                window.removeEventListener('mousemove', handleMouseMove);
+            }
             if (program) gl.deleteProgram(program);
             if (textureRef.current) gl.deleteTexture(textureRef.current);
         };
