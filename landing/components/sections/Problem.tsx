@@ -1,11 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { EyeTrackingEffect } from '../effects/EyeTrackingEffect';
 import styles from './Problem.module.css';
 
 export function Problem() {
     return (
         <section className={styles.section} id="problem">
+            <div className={styles.eyeBackground}>
+                <EyeTrackingEffect
+                    imageUrl="/assets/eyesmall.jpg"
+                    sensitivity={0.5}
+                    zoom={1.1}
+                />
+            </div>
             <div className={styles.container}>
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -31,7 +39,7 @@ export function Problem() {
                             </div>
                             <div className={styles.problemItem}>
                                 <span className={styles.icon}>x</span>
-                                <p>Missing Pump.fun & Solana-specific insights</p>
+                                <p>Missing proper tuning to filter the noise</p>
                             </div>
                         </div>
                     </div>
@@ -45,7 +53,7 @@ export function Problem() {
                                 <span className={styles.icon}>✓</span>
                                 <div>
                                     <h4>Real AI Analysis</h4>
-                                    <p>Powered by Claude Sonnet 4.5</p>
+                                    <p>Powered by custom trained Sonnet 4.5</p>
                                 </div>
                             </div>
                             <div className={styles.solutionItem}>
