@@ -14,7 +14,7 @@ export function Footer() {
 
                     <div className={styles.social}>
                         <a
-                            href="https://twitter.com/quantir"
+                            href="#"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.socialLink}
@@ -25,7 +25,7 @@ export function Footer() {
                             </svg>
                         </a>
                         <a
-                            href="https://discord.gg/quantir"
+                            href="#"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.socialLink}
@@ -36,7 +36,7 @@ export function Footer() {
                             </svg>
                         </a>
                         <a
-                            href="https://t.me/quantir"
+                            href="#"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.socialLink}

@@ -19,7 +19,7 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
     const glRef = useRef<WebGL2RenderingContext | null>(null);
     const programRef = useRef<WebGLProgram | null>(null);
     const textureRef = useRef<WebGLTexture | null>(null);
-    const requestRef = useRef<number>();
+    const requestRef = useRef<number | undefined>(undefined);
     const pointerRef = useRef({ x: 0.5, y: 0.5 });
     const paramsRef = useRef({ sensitivity, zoom });
 
