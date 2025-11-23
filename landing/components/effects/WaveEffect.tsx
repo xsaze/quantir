@@ -40,7 +40,7 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
   const backgroundTextureRef = useRef<WebGLTexture | null>(null);
   const bufferRef = useRef<WebGLBuffer | null>(null);
   const startTimeRef = useRef(Date.now());
-  const animationIdRef = useRef<number>();
+  const animationIdRef = useRef<number | undefined>(undefined);
 
   // Use refs for parameters to avoid recreating WebGL context
   const paramsRef = useRef({ frequencyX, frequencyY, amplitude, speed });

@@ -54,7 +54,7 @@ export const MaskMagicEffect: React.FC<MaskMagicEffectProps> = ({
   const backgroundTextureRef = useRef<WebGLTexture | null>(null);
   const pointerRef = useRef({ x: 0.5, y: 0.5 });
   const startTimeRef = useRef(Date.now());
-  const animationIdRef = useRef<number>();
+  const animationIdRef = useRef<number | undefined>(undefined);
 
   // Configuration (use props if provided, otherwise fall back to defaults)
   const config = {
