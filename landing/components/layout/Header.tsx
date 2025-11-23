@@ -20,7 +20,15 @@ export function Header() {
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            // Get header height to offset scroll position
+            const headerHeight = 80; // Adjust if your header height changes
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - headerHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
             setMobileMenuOpen(false);
         }
     };

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useScrollContext } from './ScrollContext';
 
 export type EasingFunction = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic';
@@ -60,9 +60,47 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
   style = {}
 }) => {
   const { scrollY, activeSection } = useScrollContext();
+  const [sectionPositions, setSectionPositions] = useState<Array<{ top: number; height: number }>>([]);
 
   // Calculate background position based on scroll
   const backgroundPositionY = -(scrollY * parallaxSpeed);
+
+  // Measure real section positions and heights
+  useLayoutEffect(() => {
+    const measureSections = () => {
+      const positions = sections.map(section => {
+        const element = document.getElementById(section.sectionId);
+        if (element) {
+          return {
+            top: element.offsetTop,
+            height: element.offsetHeight
+          };
+        }
+        return { top: 0, height: window.innerHeight };
+      });
+      setSectionPositions(positions);
+    };
+
+    // Measure on mount and after a short delay to ensure DOM is ready
+    measureSections();
+    const timeoutId = setTimeout(measureSections, 100);
+
+    // Remeasure on window resize
+    window.addEventListener('resize', measureSections);
+
+    // Use ResizeObserver to track section size changes
+    const observer = new ResizeObserver(measureSections);
+    sections.forEach(section => {
+      const element = document.getElementById(section.sectionId);
+      if (element) observer.observe(element);
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', measureSections);
+      observer.disconnect();
+    };
+  }, [sections]);
 
   // Calculate scroll progress for a specific section
   const getSectionScrollProgress = (sectionId: string): number => {
@@ -118,6 +156,7 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
         {sections.map((section, index) => {
           const EffectComponent = section.effectComponent;
           const sectionScrollProgress = getSectionScrollProgress(section.sectionId);
+          const position = sectionPositions[index] || { top: index * window.innerHeight, height: window.innerHeight };
 
           // Calculate scroll-responsive props with easing
           const scrollResponsiveProps: Record<string, number> = {};
@@ -136,10 +175,10 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
               key={section.sectionId}
               style={{
                 position: 'absolute',
-                top: `${index * 100}vh`,
+                top: `${position.top}px`,
                 left: 0,
                 width: '100%',
-                height: '100vh',
+                height: `${position.height}px`,
                 // Only show CSS background if there's NO effect component
                 backgroundImage: !EffectComponent ? `url(${section.imagePath})` : 'none',
                 backgroundSize: 'cover',

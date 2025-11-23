@@ -5,7 +5,7 @@
     align-items: center;
     gap: var(--spacing-md);
     height: 100%;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(10px);
 }
 
 .icon {
