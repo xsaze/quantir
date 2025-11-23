@@ -126,8 +126,16 @@
         margin-top: -50px;
     }
 
+    .solutionSide .icon {
+        display: none;
+    }
+
     .content {
         gap: 0;
+    }
+
+    .solutionItem h4 {
+    text-align: right;
     }
 
     .title {
