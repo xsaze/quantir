@@ -9,7 +9,7 @@
 }
 
 .scrolled {
-    background: rgba(10, 10, 10, 0.3);
+    background: rgba(10, 10, 10, 1);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -24,6 +24,7 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
+    
 }
 
 .logo {
@@ -31,7 +32,7 @@
 }
 
 .logoText {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--white);

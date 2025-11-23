@@ -60,6 +60,11 @@
     margin-top: 2px;
 }
 
+.problemItem .icon {
+    margin-top:0;
+    font-size:1rem;
+}
+
 .solutionItem h4 {
     font-size: var(--text-body);
     font-weight: 600;

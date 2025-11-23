@@ -18,19 +18,19 @@ export function Problem() {
                         <h2 className={styles.title}>The Problem</h2>
                         <div className={styles.problemList}>
                             <div className={styles.problemItem}>
-                                <span className={styles.icon}>❌</span>
+                                <span className={styles.icon}>x</span>
                                 <p>ChatGPT wrappers with no live data</p>
                             </div>
                             <div className={styles.problemItem}>
-                                <span className={styles.icon}>❌</span>
+                                <span className={styles.icon}>x</span>
                                 <p>Too complex for beginners, too shallow for pros</p>
                             </div>
                             <div className={styles.problemItem}>
-                                <span className={styles.icon}>❌</span>
+                                <span className={styles.icon}>x</span>
                                 <p>Focused on outdated historical analysis</p>
                             </div>
                             <div className={styles.problemItem}>
-                                <span className={styles.icon}>❌</span>
+                                <span className={styles.icon}>x</span>
                                 <p>Missing Pump.fun & Solana-specific insights</p>
                             </div>
                         </div>

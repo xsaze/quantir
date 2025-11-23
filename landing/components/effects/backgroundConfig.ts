@@ -82,11 +82,7 @@ export const backgroundConfig: Record<string, BackgroundEffectConfig> = {
   features: {
     component: WaveEffect,
     backgroundImage: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
-    scrollParams: [
-      // Wave effect gets more intense as you scroll through features
-      { param: 'amplitude', startValue: 0.01, endValue: 0.05, easing: 'easeInOut' },
-      { param: 'speed', startValue: 0.5, endValue: 2.0, easing: 'easeIn' }
-    ]
+    
   },
 
   'how-it-works': {

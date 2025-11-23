@@ -34,25 +34,23 @@ export function ClientOnlyBackground() {
       sectionId: 'problem',
       imagePath: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
       effectComponent: WaveEffect,
-      effectProps: {},
-      scrollParams: [
-        { param: 'frequencyX', startValue: 19, endValue: 44, easing: 'easeInOutCubic' as EasingFunction },
-        { param: 'frequencyY', startValue: 7, endValue: 44, easing: 'easeInOutCubic' as EasingFunction },
-        { param: 'amplitude', startValue: 0.1, endValue: 0.1, easing: 'linear' as EasingFunction },
-        { param: 'speed', startValue: 0.8, endValue: 3.8, easing: 'easeOutCubic' as EasingFunction }
-      ]
+      effectProps: {
+        frequencyX: 19,
+        frequencyY: 7,
+        amplitude: 0.1,
+        speed: 1.2
+      }
     },
     {
       sectionId: 'features',
       imagePath: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
       effectComponent: WaveEffect,
-      effectProps: {},
-      scrollParams: [
-        { param: 'frequencyX', startValue: 44, endValue: 19, easing: 'easeInOutCubic' as EasingFunction },
-        { param: 'frequencyY', startValue: 44, endValue: 7, easing: 'easeInOutCubic' as EasingFunction },
-        { param: 'amplitude', startValue: 0.1, endValue: 0.1, easing: 'linear' as EasingFunction },
-        { param: 'speed', startValue: 3.8, endValue: 0.8, easing: 'easeInCubic' as EasingFunction }
-      ],
+      effectProps: {
+        frequencyX: 25,
+        frequencyY: 15,
+        amplitude: 0.08,
+        speed: 1.8
+      },
       flipHorizontal: true
     },
     {
