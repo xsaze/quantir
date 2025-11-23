@@ -7,13 +7,7 @@ import styles from './Problem.module.css';
 export function Problem() {
     return (
         <section className={styles.section} id="problem">
-            <div className={styles.eyeBackground}>
-                <EyeTrackingEffect
-                    imageUrl="/assets/eyesmall.jpg"
-                    sensitivity={0.5}
-                    zoom={1.1}
-                />
-            </div>
+            
             <div className={styles.container}>
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -42,6 +36,14 @@ export function Problem() {
                                 <p>Missing proper tuning to filter the noise</p>
                             </div>
                         </div>
+                    </div>
+
+                    <div className={styles.eyeBackground}>
+                <EyeTrackingEffect
+                    imageUrl="/assets/eyesmall.jpg"
+                    sensitivity={0.5}
+                    zoom={1.1}
+                />
                     </div>
 
                     <div className={styles.divider}></div>

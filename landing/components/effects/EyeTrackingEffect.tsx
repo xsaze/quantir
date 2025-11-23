@@ -172,6 +172,8 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
         requestRef.current = requestAnimationFrame(render);
 
         // --- Event Listeners ---
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
         const handleMouseMove = (e: MouseEvent) => {
             const rect = canvas.getBoundingClientRect();
             pointerRef.current = {
@@ -189,13 +191,17 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
             };
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove, { passive: false });
+        if (!isMobile) {
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('touchmove', handleTouchMove, { passive: false });
+        }
 
         return () => {
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('touchmove', handleTouchMove);
+            if (!isMobile) {
+                window.removeEventListener('mousemove', handleMouseMove);
+                window.removeEventListener('touchmove', handleTouchMove);
+            }
             if (program) gl.deleteProgram(program);
             if (textureRef.current) gl.deleteTexture(textureRef.current);
         };
