@@ -1,0 +1,135 @@
+.section {
+    padding: var(--spacing-3xl) 0;
+    position: relative;
+    z-index: 1;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+.card {
+    padding: var(--spacing-2xl) !important;
+    text-align: center;
+}
+
+.title {
+    font-size: var(--text-h2);
+    margin-bottom: var(--spacing-md);
+    color: var(--white);
+}
+
+.subtitle {
+    font-size: var(--text-body);
+    color: var(--white);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.6;
+}
+
+.form {
+    margin-bottom: var(--spacing-md);
+}
+
+.inputGroup {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    font-size: var(--text-body);
+    transition: all var(--transition-base);
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--white);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.input::placeholder {
+    color: var(--white);
+}
+
+.input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.submitButton {
+    flex-shrink: 0;
+}
+
+.error {
+    color: var(--white);
+    font-size: var(--text-body-sm);
+    text-align: left;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.privacy {
+    font-size: var(--text-caption);
+    color: var(--white);
+}
+
+.successMessage {
+    padding: var(--spacing-xl) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--white);
+    margin-bottom: var(--spacing-sm);
+}
+
+.successMessage h3 {
+    font-size: var(--text-h3);
+    color: var(--white);
+    margin: 0;
+}
+
+.successMessage p {
+    font-size: var(--text-body);
+    color: var(--white);
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .card {
+        padding: var(--spacing-xl) !important;
+    }
+
+    .inputGroup {
+        flex-direction: column;
+    }
+
+    .submitButton {
+        width: 100%;
+    }
+}

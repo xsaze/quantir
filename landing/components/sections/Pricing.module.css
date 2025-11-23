@@ -1,0 +1,143 @@
+.section {
+    padding: var(--spacing-3xl) 0;
+    position: relative;
+    z-index: 1;
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.title {
+    font-size: var(--text-h2);
+    margin-bottom: var(--spacing-md);
+    color: var(--white);
+}
+
+.subtitle {
+    font-size: var(--text-body-lg);
+    color: var(--white);
+}
+
+.tiers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 900px;
+    margin: 0 auto var(--spacing-xl);
+}
+
+.tierCard {
+    padding: var(--spacing-xl) !important;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    height: 100%;
+    position: relative;
+}
+
+.premium {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 60px rgba(255, 255, 255, 0.1);
+}
+
+.badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: var(--white);
+    color: var(--background);
+    padding: 0.375rem 1rem;
+    border-radius: 20px;
+    font-size: var(--text-caption);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tierTitle {
+    font-size: var(--text-h3);
+    color: var(--white);
+    margin-top: var(--spacing-sm);
+}
+
+.tierPrice {
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--white);
+    font-family: var(--font-mono);
+}
+
+.tierDescription {
+    font-size: var(--text-body-sm);
+    color: var(--white);
+    margin-bottom: var(--spacing-sm);
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.features li {
+    font-size: var(--text-body-sm);
+    color: var(--white);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.features li:last-child {
+    border-bottom: none;
+}
+
+.tierButton {
+    margin-top: var(--spacing-md);
+    width: 100%;
+}
+
+.disclaimer {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.disclaimer p {
+    font-size: var(--text-body-sm);
+    color: var(--white);
+    line-height: 1.6;
+}
+
+.disclaimer strong {
+    color: var(--white);
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .tiers {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    .tierCard {
+        padding: var(--spacing-lg) !important;
+    }
+}
