@@ -77,7 +77,8 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
   }, []);
 
   // Calculate background position based on scroll
-  const backgroundPositionY = -(scrollY * parallaxSpeed);
+  // Parallax disabled - background scrolls with content (no movement)
+  const backgroundPositionY = -(scrollY * 1);
 
   // Measure real section positions and heights
   useLayoutEffect(() => {
@@ -163,8 +164,10 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
           left: 0,
           width: '100%',
           height: `${sections.length * 100}vh`,
-          transform: `translateY(${backgroundPositionY}px)`,
-          willChange: 'transform'
+          transform: `translate3d(0, ${backgroundPositionY}px, 0)`,
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden'
         }}
       >
         {sections.map((section, index) => {
