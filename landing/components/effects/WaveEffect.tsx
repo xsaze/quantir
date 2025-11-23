@@ -42,6 +42,14 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
   const startTimeRef = useRef(Date.now());
   const animationIdRef = useRef<number>();
 
+  // Use refs for parameters to avoid recreating WebGL context
+  const paramsRef = useRef({ frequencyX, frequencyY, amplitude, speed });
+
+  // Update params ref when props change (doesn't trigger effect)
+  useEffect(() => {
+    paramsRef.current = { frequencyX, frequencyY, amplitude, speed };
+  }, [frequencyX, frequencyY, amplitude, speed]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -229,13 +237,13 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
       gl.bindTexture(gl.TEXTURE_2D, backgroundTextureRef.current);
       gl.uniform1i(uniforms.uTexture, 0);
 
-      // Set uniforms
+      // Set uniforms (use ref values for smooth parameter updates)
       gl.uniform1f(uniforms.uTime, currentTime);
       gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
-      gl.uniform1f(uniforms.uFrequencyX, frequencyX);
-      gl.uniform1f(uniforms.uFrequencyY, frequencyY);
-      gl.uniform1f(uniforms.uAmplitude, amplitude);
-      gl.uniform1f(uniforms.uSpeed, speed);
+      gl.uniform1f(uniforms.uFrequencyX, paramsRef.current.frequencyX);
+      gl.uniform1f(uniforms.uFrequencyY, paramsRef.current.frequencyY);
+      gl.uniform1f(uniforms.uAmplitude, paramsRef.current.amplitude);
+      gl.uniform1f(uniforms.uSpeed, paramsRef.current.speed);
 
       // Draw
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -265,7 +273,7 @@ export const WaveEffect: React.FC<WaveEffectProps> = ({
         gl.deleteBuffer(bufferRef.current);
       }
     };
-  }, [backgroundImage, frequencyX, frequencyY, amplitude, speed]);
+  }, [backgroundImage]); // Only recreate on background image change
 
   return (
     <canvas

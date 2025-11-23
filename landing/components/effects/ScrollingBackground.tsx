@@ -66,18 +66,26 @@ export const ScrollingBackground: React.FC<ScrollingBackgroundProps> = ({
 
   // Calculate scroll progress for a specific section
   const getSectionScrollProgress = (sectionId: string): number => {
-    if (activeSection !== sectionId) return 0;
-
     // Get the section element
     const sectionElement = document.getElementById(sectionId);
     if (!sectionElement) return 0;
 
     const rect = sectionElement.getBoundingClientRect();
-    const sectionTop = scrollY + rect.top;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate how far the section has scrolled into view
+    // When section top is at bottom of viewport: progress = 0
+    // When section bottom is at top of viewport: progress = 1
+    const sectionTop = rect.top;
     const sectionHeight = rect.height;
 
-    // Calculate progress within this section (0 to 1)
-    const progress = (scrollY - sectionTop) / sectionHeight;
+    // Calculate progress based on viewport position
+    // Start counting when section enters viewport (bottom)
+    // Finish when section exits viewport (top)
+    const totalScrollDistance = viewportHeight + sectionHeight;
+    const currentScrollPosition = viewportHeight - sectionTop;
+    const progress = currentScrollPosition / totalScrollDistance;
+
     return Math.max(0, Math.min(1, progress));
   };
 
