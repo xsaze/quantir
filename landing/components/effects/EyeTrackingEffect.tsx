@@ -190,13 +190,20 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
             const rect = canvas.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
 
-            // Calculate how much of the element is in view
-            const elementCenter = rect.top + rect.height / 2;
-            const viewportCenter = viewportHeight / 2;
+            // Calculate scroll progress through the element
+            // When element bottom enters viewport: progress = 0
+            // When element top leaves viewport: progress = 1
+            const elementTop = rect.top;
+            const elementBottom = rect.bottom;
+            const elementHeight = rect.height;
+
+            // Distance from bottom of viewport to top of element
+            const scrollDistance = viewportHeight + elementHeight;
+            const currentScroll = viewportHeight - elementBottom;
 
             // Normalize to 0-1 range
             const scrollProgress = Math.max(0, Math.min(1,
-                0.5 + (viewportCenter - elementCenter) / viewportHeight
+                currentScroll / scrollDistance
             ));
 
             pointerRef.current = {
