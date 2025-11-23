@@ -19,10 +19,9 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
     const glRef = useRef<WebGL2RenderingContext | null>(null);
     const programRef = useRef<WebGLProgram | null>(null);
     const textureRef = useRef<WebGLTexture | null>(null);
-    const requestRef = useRef<number | undefined>(undefined);
+    const requestRef = useRef<number>();
     const pointerRef = useRef({ x: 0.5, y: 0.5 });
     const paramsRef = useRef({ sensitivity, zoom });
-    const isMobileRef = useRef(false);
 
     useEffect(() => {
         paramsRef.current = { sensitivity, zoom };
@@ -172,12 +171,8 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
 
         requestRef.current = requestAnimationFrame(render);
 
-        // --- Detect Mobile ---
-        isMobileRef.current = window.matchMedia('(max-width: 768px)').matches;
-
         // --- Event Listeners ---
         const handleMouseMove = (e: MouseEvent) => {
-            if (isMobileRef.current) return;
             const rect = canvas.getBoundingClientRect();
             pointerRef.current = {
                 x: (e.clientX - rect.left) / rect.width,
@@ -185,47 +180,22 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
             };
         };
 
-        const handleScroll = () => {
-            if (!isMobileRef.current) return;
+        const handleTouchMove = (e: TouchEvent) => {
+            const touch = e.targetTouches[0];
             const rect = canvas.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-
-            // Calculate scroll progress through the element
-            // When element bottom enters viewport: progress = 0
-            // When element top leaves viewport: progress = 1
-            const elementTop = rect.top;
-            const elementBottom = rect.bottom;
-            const elementHeight = rect.height;
-
-            // Distance from bottom of viewport to top of element
-            const scrollDistance = viewportHeight + elementHeight;
-            const currentScroll = viewportHeight - elementBottom;
-
-            // Normalize to 0-1 range
-            const scrollProgress = Math.max(0, Math.min(1,
-                currentScroll / scrollDistance
-            ));
-
             pointerRef.current = {
-                x: 0.5,
-                y: scrollProgress
+                x: (touch.clientX - rect.left) / rect.width,
+                y: 1.0 - (touch.clientY - rect.top) / rect.height
             };
         };
 
-        if (isMobileRef.current) {
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            handleScroll(); // Initial call
-        } else {
-            window.addEventListener('mousemove', handleMouseMove);
-        }
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
         return () => {
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
-            if (isMobileRef.current) {
-                window.removeEventListener('scroll', handleScroll);
-            } else {
-                window.removeEventListener('mousemove', handleMouseMove);
-            }
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('touchmove', handleTouchMove);
             if (program) gl.deleteProgram(program);
             if (textureRef.current) gl.deleteTexture(textureRef.current);
         };
