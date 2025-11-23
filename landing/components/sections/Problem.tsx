@@ -38,13 +38,14 @@ export function Problem() {
                         </div>
                     </div>
 
-                    <div className={styles.eyeBackground}>
+                    <div className={styles.eyeWrap}><div className={styles.eyeBackground}>
                 <EyeTrackingEffect
                     imageUrl="/assets/eyesmall.jpg"
                     sensitivity={0.3}
                     zoom={1.1}
                 />
-                    </div>
+                    </div></div>
+                    
 
                     <div className={styles.divider}></div>
 
