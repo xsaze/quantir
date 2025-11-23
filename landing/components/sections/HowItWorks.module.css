@@ -8,6 +8,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
+
 }
 
 .container {
@@ -56,6 +57,7 @@
     align-items: center;
     gap: var(--spacing-md);
     padding: var(--spacing-xl) !important;
+    background-color: rgba(0,0,0,0.8);
 }
 
 .stepNumber {

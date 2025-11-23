@@ -62,9 +62,7 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className={styles.disclaimer}>
-                    <p>Not financial advice. Do your own research.</p>
-                </div>
+                
             </div>
         </footer>
     );
