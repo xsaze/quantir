@@ -26,15 +26,18 @@ const nextConfig: NextConfig = {
     if (!isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
+        maxSize: 244 * 1024, // 244KB max chunk size to prevent blocking
+        minSize: 20 * 1024,  // 20KB min chunk size to prevent over-splitting
         cacheGroups: {
           default: false,
           vendors: false,
-          // Three.js separate chunk (only loads on /app page)
+          // Three.js separate chunk (async loading for on-demand)
           three: {
             name: 'three',
             test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
-            chunks: 'all',
+            chunks: 'async', // Changed to async for on-demand loading
             priority: 30,
+            maxSize: 244 * 1024,
           },
           // Framer Motion chunk
           framerMotion: {
@@ -42,6 +45,7 @@ const nextConfig: NextConfig = {
             test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
             chunks: 'all',
             priority: 25,
+            maxSize: 244 * 1024,
           },
           // Vendor chunk (remaining node_modules)
           vendor: {
@@ -49,6 +53,7 @@ const nextConfig: NextConfig = {
             test: /[\\/]node_modules[\\/]/,
             chunks: 'all',
             priority: 20,
+            maxSize: 244 * 1024,
           },
           // Common app code
           common: {
@@ -57,9 +62,13 @@ const nextConfig: NextConfig = {
             chunks: 'all',
             priority: 10,
             reuseExistingChunk: true,
+            maxSize: 244 * 1024,
           },
         },
       };
+
+      // Add runtime chunk for better caching
+      config.optimization.runtimeChunk = 'single';
     }
 
     return config;

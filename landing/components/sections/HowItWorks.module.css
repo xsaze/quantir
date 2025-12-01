@@ -3,12 +3,15 @@
     position: relative;
     z-index: 1;
     overflow: hidden;
-    background-image: url('/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg');
+    /* JPG fallback for browsers without image-set support */
+    background-image: url('/assets/optimized/hero-1920.jpg');
+    /* WebP with responsive sizing for modern browsers */
+    background-image: -webkit-image-set(url('/assets/optimized/hero-1920.webp') 1x);
+    background-image: image-set(url('/assets/optimized/hero-1920.webp') 1x);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
-
 }
 
 .container {
@@ -57,7 +60,7 @@
     align-items: center;
     gap: var(--spacing-md);
     padding: var(--spacing-xl) !important;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .stepNumber {
@@ -104,6 +107,10 @@
 @media (max-width: 768px) {
     .section {
         padding: var(--spacing-2xl) 0;
+        /* Smaller image for mobile/tablet */
+        background-image: url('/assets/optimized/hero-800.jpg');
+        background-image: -webkit-image-set(url('/assets/optimized/hero-800.webp') 1x);
+        background-image: image-set(url('/assets/optimized/hero-800.webp') 1x);
     }
 
     .stepCard {
@@ -112,5 +119,14 @@
 
     .stepNumber {
         font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section {
+        /* Even smaller image for mobile phones */
+        background-image: url('/assets/optimized/hero-600.jpg');
+        background-image: -webkit-image-set(url('/assets/optimized/hero-600.webp') 1x);
+        background-image: image-set(url('/assets/optimized/hero-600.webp') 1x);
     }
 }

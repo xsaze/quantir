@@ -26,7 +26,7 @@ export function ClientOnlyBackground() {
   const backgroundSections = [
     {
       sectionId: 'hero',
-      imagePath: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg',
+      imagePath: '/assets/optimized/hero-1920.webp',
       effectComponent: MaskMagicEffect,
       effectProps: {}
     },
@@ -39,7 +39,7 @@ export function ClientOnlyBackground() {
     },
     {
       sectionId: 'features',
-      imagePath: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
+      imagePath: '/assets/optimized/features-1920.webp',
       effectComponent: WaveEffect,
       effectProps: {
         frequencyX: 46,
@@ -51,13 +51,13 @@ export function ClientOnlyBackground() {
     },
     {
       sectionId: 'how-it-works',
-      imagePath: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg',
+      imagePath: '/assets/optimized/hero-1920.webp',
       effectComponent: undefined,
       effectProps: {}
     },
     {
       sectionId: 'pricing',
-      imagePath: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg',
+      imagePath: '/assets/optimized/hero-1920.webp',
       effectComponent: undefined,
       effectProps: {}
     }
