@@ -1,8 +1,8 @@
 :root {
   /* === Colors - Monochrome Dark === */
-  --background: #000000;
-  --surface: #141414;
-  --surface-glass: rgba(20, 20, 20, 0.35);
+  --background: #1a1a1a;
+  --surface: #2a2a2a;
+  --surface-glass: rgba(42, 42, 42, 0.35);
 
   /* Grayscale */
   --white: #ffffff;
@@ -57,10 +57,10 @@
   --transition-slow: 0.5s ease;
 
   /* === Borders === */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
 }
 
 * {
@@ -169,7 +169,7 @@ a:hover {
 }
 
 .glass-hover:hover {
-  background: rgba(30, 30, 30, 0.2);
+  background: rgba(60, 60, 60, 0.4);
   border-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0 0 40px var(--glow);
   transform: translateY(-4px);
@@ -252,7 +252,7 @@ a:hover {
 
 ::-webkit-scrollbar-thumb {
   background: var(--gray-700);
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

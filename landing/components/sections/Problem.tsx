@@ -1,8 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { EyeTrackingEffect } from '../effects/EyeTrackingEffect';
+import dynamic from 'next/dynamic';
 import styles from './Problem.module.css';
+
+const EyeTrackingEffect = dynamic(
+  () => import('../effects/EyeTrackingEffect').then(mod => ({ default: mod.EyeTrackingEffect })),
+  { ssr: false, loading: () => null }
+);
 
 export function Problem() {
     return (
@@ -40,7 +45,7 @@ export function Problem() {
 
                     <div className={styles.eyeBackground}>
                 <EyeTrackingEffect
-                    imageUrl="/assets/eyesmall.jpg"
+                    backgroundImage="eye"
                     sensitivity={0.3}
                     zoom={1.1}
                 />

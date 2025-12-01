@@ -15,7 +15,7 @@ export function Pricing() {
         <section className={styles.section} id="pricing">
             <div className={styles.waveBackground}>
                 <WaveEffect
-                    backgroundImage="/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg"
+                    backgroundImage="hero"
                     frequencyX={45}
                     frequencyY={45}
                     amplitude={0.067}

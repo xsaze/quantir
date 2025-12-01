@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wmic:*)",
+      "Bash(systeminfo:*)",
+      "Bash(findstr:*)",
+      "Bash(tasklist:*)",
+      "Bash(netstat:*)",
+      "Bash(powershell \"Get-Process | Sort-Object WS -Descending | Select-Object -First 20 ProcessName,Id,@{Name=''Memory(MB)'';Expression={[math]::Round($_.WS/1MB,2)}} | Format-Table -AutoSize\")",
+      "Bash(powershell \"Get-Process | Measure-Object WS -Sum | Select-Object @{Name=''TotalMemoryUsed(GB)'';Expression={[math]::Round($_.Sum/1GB,2)}}\")",
+      "Bash(powershell:*)",
+      "Bash(cmd /c \"wmic process get Name,ProcessId,WorkingSetSize /format:csv | sort /r\")",
+      "Bash(cmd /c 'wmic process where \"\"WorkingSetSize>100000000\"\" get Name,ProcessId,WorkingSetSize')",
+      "Bash(dir:*)",
+      "Bash(find:*)",
+      "Bash(nul)",
+      "Bash(cmd /c 'echo %TEMP% && dir /s /a \"\"%TEMP%\"\" 2>nul | find \"\"File(s)\"\"')",
+      "Bash(powercfg:*)",
+      "Bash(reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\")",
+      "Bash(reg query \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\")",
+      "Bash(reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"utweb\" /f)",
+      "Bash(reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"MicrosoftEdgeAutoLaunch_22FF3719BBF8C71E70968B6C4C1C138E\" /f)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(node scripts/optimize-images.js:*)",
+      "Bash(cmd /c \"dir public\\assets\\optimized /s\")",
+      "Bash(npm i:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -3,8 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FeatureCard } from '../ui/FeatureCard';
-import { WaveEffect } from '../effects/WaveEffect';
+import dynamic from 'next/dynamic';
 import styles from './Features.module.css';
+
+const WaveEffect = dynamic(
+  () => import('../effects/WaveEffect').then(mod => ({ default: mod.WaveEffect })),
+  { ssr: false, loading: () => null }
+);
 
 // Simple icon components using Unicode characters and symbols
 const features = [
@@ -136,7 +141,7 @@ export function Features() {
                 }}
             >
                 <WaveEffect
-                    backgroundImage="/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg"
+                    backgroundImage="features"
                     frequencyX={46}
                     frequencyY={50}
                     amplitude={0.1}

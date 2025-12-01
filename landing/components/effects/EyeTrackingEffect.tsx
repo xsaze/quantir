@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+import { loadImageForWebGL } from '@/lib/imageLoader';
 
 interface EyeTrackingEffectProps {
-    imageUrl: string;
+    backgroundImage?: 'hero' | 'features' | 'eye';
     sensitivity?: number;
     zoom?: number;
     className?: string;
@@ -9,7 +10,7 @@ interface EyeTrackingEffectProps {
 }
 
 export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
-    imageUrl,
+    backgroundImage = 'eye',
     sensitivity = 0.5,
     zoom = 1.0,
     className,
@@ -129,13 +130,15 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
         textureRef.current = texture;
 
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-            gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-        };
-        img.src = imageUrl;
+        // Load background image with responsive loader
+        loadImageForWebGL(backgroundImage)
+            .then((img) => {
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+            })
+            .catch((error) => {
+                console.error('Failed to load background image:', error);
+            });
 
         // --- Animation Loop ---
         const render = () => {
@@ -205,7 +208,7 @@ export const EyeTrackingEffect: React.FC<EyeTrackingEffectProps> = ({
             if (program) gl.deleteProgram(program);
             if (textureRef.current) gl.deleteTexture(textureRef.current);
         };
-    }, [imageUrl]); // Re-init if image changes
+    }, [backgroundImage]); // Re-init if image changes
 
     return (
         <canvas

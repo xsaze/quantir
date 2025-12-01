@@ -1,0 +1,147 @@
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: #0a0a0a;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* === Side Menu === */
+.sideMenu {
+  width: 280px;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.menuContent {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.menuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.menuTitle {
+  font-size: var(--text-body-lg);
+  font-weight: 600;
+  color: var(--white);
+  margin: 0;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.clearAllButton {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.clearAllButton:hover {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+/* === Main Area === */
+.mainArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: transparent;
+}
+
+/* === Message List Area === */
+.messageContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: relative;
+}
+
+/* === Input Area === */
+.inputArea {
+  padding: var(--spacing-lg);
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+/* === Mobile Toggle === */
+.mobileMenuToggle {
+  display: none;
+  position: absolute;
+  top: var(--spacing-md);
+  left: var(--spacing-md);
+  z-index: 30;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--white);
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .sideMenu {
+    position: absolute;
+    height: 100%;
+    width: 0;
+    border-right: none;
+  }
+
+  .sideMenu.open {
+    width: 280px;
+    border-right: 1px solid var(--border);
+  }
+
+  .mobileMenuToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .messageContainer {
+    padding: var(--spacing-md);
+  }
+
+  .inputArea {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .sideMenu.open {
+    width: 100%;
+  }
+}

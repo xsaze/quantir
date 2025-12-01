@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useScrollContext } from '../effects/ScrollContext';
 import { Button } from '../ui/Button';
 import styles from './Header.module.css';
@@ -28,9 +29,9 @@ export function Header() {
     return (
         <header className={`${styles.header} ${hasScrolled ? styles.scrolled : ''}`}>
             <div className={styles.container}>
-                <div className={styles.logo}>
+                <Link href="/" className={styles.logo}>
                     <span className={styles.logoText}>QUANTIR</span>
-                </div>
+                </Link>
 
                 {/* Desktop Navigation */}
                 <nav className={styles.nav}>
@@ -43,6 +44,9 @@ export function Header() {
                     <button onClick={() => scrollToSection('pricing')} className={styles.navLink}>
                         Pricing
                     </button>
+                    <Link href="/app" className={styles.navLink}>
+                        App
+                    </Link>
                 </nav>
 
                 <div className={styles.cta}>
@@ -73,6 +77,9 @@ export function Header() {
                     <button onClick={() => scrollToSection('pricing')} className={styles.mobileNavLink}>
                         Pricing
                     </button>
+                    <Link href="/app" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>
+                        App
+                    </Link>
                     <Button variant="primary" onClick={() => scrollToSection('waitlist')}>
                         Join Waitlist
                     </Button>

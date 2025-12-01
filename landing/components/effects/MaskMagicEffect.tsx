@@ -17,9 +17,10 @@
  */
 
 import React, { useEffect, useRef } from 'react';
+import { loadImageForWebGL } from '@/lib/imageLoader';
 
 interface MaskMagicEffectProps {
-  backgroundImage?: string;
+  backgroundImage?: 'hero' | 'features' | 'eye';
   className?: string;
   style?: React.CSSProperties;
 
@@ -36,7 +37,7 @@ interface MaskMagicEffectProps {
 }
 
 export const MaskMagicEffect: React.FC<MaskMagicEffectProps> = ({
-  backgroundImage = '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg',
+  backgroundImage = 'hero',
   className = '',
   style = {},
   // Scroll-responsive parameters
@@ -278,25 +279,25 @@ export const MaskMagicEffect: React.FC<MaskMagicEffectProps> = ({
     gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(aPosition);
 
-    // Load background image
-    const image = new Image();
-    image.crossOrigin = 'anonymous';
-    image.src = backgroundImage;
+    // Load background image with responsive loader
+    loadImageForWebGL(backgroundImage)
+      .then((image) => {
+        gl.activeTexture(gl.TEXTURE0);
+        const texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
 
-    image.onload = () => {
-      gl.activeTexture(gl.TEXTURE0);
-      const texture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-
-      backgroundTextureRef.current = texture;
-    };
+        backgroundTextureRef.current = texture;
+      })
+      .catch((error) => {
+        console.error('Failed to load background image:', error);
+      });
 
     // Mouse handling - track globally on window
     const handleMouseMove = (e: MouseEvent) => {

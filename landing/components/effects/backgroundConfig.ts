@@ -33,8 +33,8 @@ export interface BackgroundEffectConfig {
   /** Static props to pass to the component */
   staticProps?: Record<string, any>;
 
-  /** Background image path (if applicable) */
-  backgroundImage?: string;
+  /** Background image key (hero, features, or eye) */
+  backgroundImage?: 'hero' | 'features' | 'eye';
 }
 
 /**
@@ -66,7 +66,7 @@ export const backgroundConfig: Record<string, BackgroundEffectConfig> = {
   // You can customize this per section after importing your effect components
   hero: {
     component: MaskMagicEffect,
-    backgroundImage: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg',
+    backgroundImage: 'hero',
     scrollParams: [
       // Example: Modify these parameters based on scroll
       // { param: 'maskSize', startValue: 0.3, endValue: 0.7, easing: 'easeInOut' },
@@ -76,28 +76,28 @@ export const backgroundConfig: Record<string, BackgroundEffectConfig> = {
 
   problem: {
     component: MaskMagicEffect,
-    backgroundImage: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg'
+    backgroundImage: 'eye'
   },
 
   features: {
     component: WaveEffect,
-    backgroundImage: '/assets/6db8c45a-2b6b-4fed-9347-da402489f38f_3840w.jpg',
-    
+    backgroundImage: 'features',
+
   },
 
   'how-it-works': {
     component: MaskMagicEffect,
-    backgroundImage: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg'
+    backgroundImage: 'hero'
   },
 
   pricing: {
     component: MaskMagicEffect,
-    backgroundImage: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg'
+    backgroundImage: 'hero'
   },
 
   waitlist: {
     component: MaskMagicEffect,
-    backgroundImage: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg'
+    backgroundImage: 'hero'
   }
 };
 
@@ -106,7 +106,7 @@ export const backgroundConfig: Record<string, BackgroundEffectConfig> = {
  */
 export const defaultBackgroundConfig: BackgroundEffectConfig = {
   component: MaskMagicEffect,
-  backgroundImage: '/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg'
+  backgroundImage: 'hero'
 };
 
 /**

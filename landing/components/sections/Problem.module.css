@@ -2,7 +2,7 @@
     padding: var(--spacing-3xl) 0;
     position: relative;
     z-index: 1;
-
+    background-color: #000000;
 }
 
 .eyeBackground {
@@ -84,8 +84,8 @@
 }
 
 .problemItem .icon {
-    margin-top:0;
-    font-size:1rem;
+    margin-top: 0;
+    font-size: 1rem;
 }
 
 .solutionItem h4 {
@@ -135,7 +135,7 @@
     }
 
     .solutionItem h4 {
-    text-align: right;
+        text-align: right;
     }
 
     .title {

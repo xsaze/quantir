@@ -2,8 +2,25 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
-import { MaskMagicEffect } from '../effects/MaskMagicEffect';
+import dynamic from 'next/dynamic';
 import styles from './Hero.module.css';
+
+const MaskMagicEffect = dynamic(
+  () => import('../effects/MaskMagicEffect').then(mod => ({ default: mod.MaskMagicEffect })),
+  {
+    ssr: false,
+    loading: () => (
+      <div style={{
+        width: '100%',
+        height: '100%',
+        backgroundImage: 'url(/assets/optimized/hero-800.avif)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(0.5)',
+      }} />
+    )
+  }
+);
 
 export function Hero() {
     const scrollToWaitlist = () => {
@@ -17,7 +34,7 @@ export function Hero() {
     return (
         <section className={styles.hero} id="hero">
             <div className={styles.background}>
-                <MaskMagicEffect backgroundImage="/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_3840w.jpg" />
+                <MaskMagicEffect backgroundImage="hero" />
             </div>
             <div className={styles.container}>
                 <motion.div
